@@ -29,6 +29,10 @@ jobs:
       - name: Criar estrutura Android
         run: flutter create --platforms=android .
 
+      - name: Definir nome do aplicativo
+        run: |
+          sed -i 's/android:label="[^"]*"/android:label="TrucoZap"/' android/app/src/main/AndroidManifest.xml
+
       - name: Limpar arquivos temporarios
         run: flutter clean
 
@@ -44,5 +48,5 @@ jobs:
       - name: Disponibilizar APK
         uses: actions/upload-artifact@v4
         with:
-          name: Truco-ZAP-Real-APK
+          name: TrucoZap-APK
           path: build/app/outputs/flutter-apk/app-release.apk
