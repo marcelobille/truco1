@@ -35,11 +35,14 @@ jobs:
       - name: Instalar dependencias
         run: flutter pub get
 
+      - name: Gerar icone do aplicativo
+        run: dart run flutter_launcher_icons
+
       - name: Gerar APK
         run: flutter build apk --release
 
       - name: Disponibilizar APK
         uses: actions/upload-artifact@v4
         with:
-          name: Truco-1-APK
+          name: Truco-ZAP-Real-APK
           path: build/app/outputs/flutter-apk/app-release.apk
