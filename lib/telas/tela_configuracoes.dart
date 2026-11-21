@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 
 import '../modelos/configuracoes.dart';
@@ -12,17 +13,20 @@ class TelaConfiguracoes extends StatefulWidget {
 class _TelaConfiguracoesState extends State<TelaConfiguracoes> {
   late int pontos;
   late int segundos;
+  late bool comCheirinho;
 
   @override
   void initState() {
     super.initState();
     pontos = ConfiguracoesPartida.pontosParaVencer;
     segundos = ConfiguracoesPartida.segundosPorJogada;
+    comCheirinho = ConfiguracoesPartida.comCheirinho;
   }
 
   void _salvar() {
     ConfiguracoesPartida.pontosParaVencer = pontos;
     ConfiguracoesPartida.segundosPorJogada = segundos;
+    ConfiguracoesPartida.comCheirinho = comCheirinho;
 
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Configurações salvas!')),
@@ -50,6 +54,7 @@ class _TelaConfiguracoesState extends State<TelaConfiguracoes> {
             ),
           ),
           const SizedBox(height: 20),
+
           _SettingCard(
             title: 'Pontos para vencer a partida',
             description: 'Escolha a pontuação necessária para ganhar.',
@@ -58,15 +63,20 @@ class _TelaConfiguracoesState extends State<TelaConfiguracoes> {
               isExpanded: true,
               dropdownColor: const Color(0xFF174B35),
               style: const TextStyle(color: Colors.white, fontSize: 16),
-              items: const [6, 9, 12].map((v) {
-                return DropdownMenuItem(value: v, child: Text('$v pontos'));
+              items: const [12, 15].map((v) {
+                return DropdownMenuItem(
+                  value: v,
+                  child: Text('$v pontos'),
+                );
               }).toList(),
               onChanged: (v) {
                 if (v != null) setState(() => pontos = v);
               },
             ),
           ),
+
           const SizedBox(height: 14),
+
           _SettingCard(
             title: 'Tempo para jogar',
             description: 'Tempo disponível para cada jogada.',
@@ -76,14 +86,44 @@ class _TelaConfiguracoesState extends State<TelaConfiguracoes> {
               dropdownColor: const Color(0xFF174B35),
               style: const TextStyle(color: Colors.white, fontSize: 16),
               items: const [15, 20, 30, 45, 60].map((v) {
-                return DropdownMenuItem(value: v, child: Text('$v segundos'));
+                return DropdownMenuItem(
+                  value: v,
+                  child: Text('$v segundos'),
+                );
               }).toList(),
               onChanged: (v) {
                 if (v != null) setState(() => segundos = v);
               },
             ),
           ),
+
+          const SizedBox(height: 14),
+
+          _SettingCard(
+            title: 'Cheirinho',
+            description:
+                'Vale 1 ponto a mais na primeira mão.',
+            child: CheckboxListTile(
+              contentPadding: EdgeInsets.zero,
+              title: const Text(
+                'Com cheirinho (vale 1 ponto a mais na primeira mão)',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                ),
+              ),
+              value: comCheirinho,
+              activeColor: Colors.amber,
+              checkColor: Colors.black,
+              controlAffinity: ListTileControlAffinity.leading,
+              onChanged: (v) {
+                setState(() => comCheirinho = v ?? false);
+              },
+            ),
+          ),
+
           const SizedBox(height: 24),
+
           SizedBox(
             height: 54,
             child: ElevatedButton.icon(
@@ -99,13 +139,16 @@ class _TelaConfiguracoesState extends State<TelaConfiguracoes> {
               ),
             ),
           ),
+
           const SizedBox(height: 12),
+
           const Text(
-            'As opções salvas serão usadas nas próximas partidas. '
-            'Nesta primeira etapa, estão disponíveis a pontuação final '
-            'e o tempo de cada jogada.',
+            'As opções salvas serão usadas nas próximas partidas.',
             textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.white70, fontSize: 13),
+            style: TextStyle(
+              color: Colors.white70,
+              fontSize: 13,
+            ),
           ),
         ],
       ),
@@ -136,9 +179,22 @@ class _SettingCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title, style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+          Text(
+            title,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           const SizedBox(height: 5),
-          Text(description, style: const TextStyle(color: Colors.white70, fontSize: 13)),
+          Text(
+            description,
+            style: const TextStyle(
+              color: Colors.white70,
+              fontSize: 13,
+            ),
+          ),
           const SizedBox(height: 10),
           child,
         ],
